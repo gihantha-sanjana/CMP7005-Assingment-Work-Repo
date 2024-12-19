@@ -10,7 +10,7 @@ from streamlit_folium import folium_static
 st.title("Air Quality Prediction Dashboard")
 
 # Link DataSet
-cleaned_df = pd.read_csv('/workspaces/CMP7005-Assingment-Work-Repo/DataSet/Preprocessed-Data.csv')
+cleaned_df = pd.read_csv('https://raw.githubusercontent.com/gihantha-sanjana/CMP7005-Assingment-Work-Repo/refs/heads/main/DataSet/Preprocessed-Data.csv?token=GHSAT0AAAAAAC4D6ORKFZI5O7RCZKX2XU5MZ3DYPQQ')
 
 
 
