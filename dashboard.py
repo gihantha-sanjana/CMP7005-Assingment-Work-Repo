@@ -1,28 +1,40 @@
-{
-  "nbformat": 4,
-  "nbformat_minor": 0,
-  "metadata": {
-    "colab": {
-      "provenance": [],
-      "authorship_tag": "ABX9TyN0LBP4IdfjnbkB7MhE5JJU"
-    },
-    "kernelspec": {
-      "name": "python3",
-      "display_name": "Python 3"
-    },
-    "language_info": {
-      "name": "python"
-    }
-  },
-  "cells": [
-    {
-      "cell_type": "code",
-      "execution_count": null,
-      "metadata": {
-        "id": "ippW9eMmiN8A"
-      },
-      "outputs": [],
-      "source": []
-    }
-  ]
-}
+import pandas as pd 
+import matplotlib.pyplot as plt
+import seaborn as sns
+import folium
+import streamlit as st
+from streamlit_folium import folium_static
+
+
+
+st.title("Air Quality Prediction Dashboard")
+
+# Link DataSet
+cleaned_df = pd.read_csv('/workspaces/CMP7005-Assingment-Work-Repo/DataSet/Preprocessed-Data.csv')
+
+
+
+# url =""
+
+# Load the dataset from GitHub
+@st.cache_data
+def load_data(cleaned_df):
+    return pd.read_csv(cleaned_df)
+
+# Load and display the dataset
+try:
+    data = load_data(cleaned_df)
+    st.subheader("Dataset Preview")
+    st.write(data.head())
+
+    # Show additional details
+    st.subheader("Dataset Info")
+    st.write(f"Shape: {data.shape}")
+    st.write("Columns:", list(data.columns))
+    st.write("Missing Values:")
+    st.write(data.isna().sum())
+except Exception as e:
+    st.error(f"Error loading dataset: {e}")
+
+
+# st.dataframe(cleaned_df.head(10))
