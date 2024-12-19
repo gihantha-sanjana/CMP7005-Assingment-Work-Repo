@@ -1,20 +1,18 @@
-import pandas as pd 
-# import matplotlib.pyplot as plt
-import seaborn as sns
-import folium
 import streamlit as st
-from streamlit_folium import folium_static
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 
+# Set the title of the app
 st.title("Air Quality Prediction Dashboard")
 
-# Link DataSet
-url = ('https://raw.githubusercontent.com/gihantha-sanjana/CMP7005-Assingment-Work-Repo/refs/heads/main/DataSet/Preprocessed-Data.csv?token=GHSAT0AAAAAAC4D6ORKFZI5O7RCZKX2XU5MZ3DYPQQ')
+url ="https://raw.githubusercontent.com/gihantha-sanjana/CMP7005-Assingment-Work-Repo/refs/heads/main/DataSet/Preprocessed-Data.csv?token=GHSAT0AAAAAAC4D6ORL6CNPKJPRLDFAO5K2Z3DYYHA"
 
-
-
-# url =""
+# Sidebar to upload the dataset
+st.sidebar.header("Upload Your Dataset")
+uploaded_file = st.sidebar.file_uploader("Choose a file", type=["csv", "xlsx"])
 
 # Load the dataset from GitHub
 @st.cache_data
@@ -35,6 +33,3 @@ try:
     st.write(data.isna().sum())
 except Exception as e:
     st.error(f"Error loading dataset: {e}")
-
-
-# st.dataframe(cleaned_df.head(10))
