@@ -15,7 +15,7 @@ install_requirements()
 
 import pickle
 # Load the pickle file
-with open("/workspaces/CMP7005-Assingment-Work-Repo/DataSet/random_forest_model.pkl","rb") as file:
+with open("https://github.com/gihantha-sanjana/CMP7005-Assingment-Work-Repo/blob/main/DataSet/random_forest_model.pkl","rb") as file:
     data = pickle.load(file)
 
 # Load the DataSet
