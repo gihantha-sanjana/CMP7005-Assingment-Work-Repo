@@ -1,54 +1,37 @@
 import streamlit as st
-import pandas as pd
 import joblib
 
-# Load the trained model
-@st.cache
-def load_model():
-    model = joblib.load("random_forest_model.pkl")
-    return model
+# Title of the Streamlit App
+st.title("Load and Use a .pkl File in Streamlit")
 
-model = load_model()
+# Sidebar input to upload or load the file
+st.sidebar.title("Model Options")
 
-# Streamlit UI
-st.title("Air Quality Prediction App")
-st.write("Upload your dataset to predict MAX_AQI values.")
+# Option to upload a .pkl file
+uploaded_file = st.sidebar.file_uploader("Upload your model (.pkl file)", type=["pkl"])
 
-# Upload CSV
-uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
-
+# Load the .pkl file
 if uploaded_file is not None:
-    # Load the uploaded CSV file
-    input_data = pd.read_csv(uploaded_file, parse_dates=True, index_col=0)
+    # Display file name
+    st.write(f"Loaded file: {uploaded_file.name}")
     
-    st.write("Uploaded Dataset:")
-    st.dataframe(input_data.head())
-    
-    # Ensure input_data is preprocessed properly
-    st.write("Preprocessing data...")
-
-    # Create lag features (example for lag 3)
-    lags = 3
-    for i in range(1, lags + 1):
-        input_data[f"lag_{i}"] = input_data['MAX_AQI'].shift(i)
-
-    # Drop rows with missing values
-    input_data = input_data.dropna()
-    
-    # Predict using the model
-    if not input_data.empty:
-        predictions = model.predict(input_data.drop('MAX_AQI', axis=1))
-        input_data['Predicted_MAX_AQI'] = predictions
+    # Load the model using joblib
+    try:
+        model = joblib.load(uploaded_file)
+        st.success("Model loaded successfully!")
         
-        st.write("Predictions:")
-        st.dataframe(input_data[['Predicted_MAX_AQI']].head())
-
-        # Download predictions as a CSV
-        st.download_button(
-            label="Download Predictions as CSV",
-            data=input_data.to_csv().encode('utf-8'),
-            file_name='predictions.csv',
-            mime='text/csv'
-        )
-    else:
-        st.write("Not enough data for prediction after preprocessing.")
+        # Example: Use the loaded model (assumes a regression model)
+        sample_input = st.text_input("Enter a sample input for prediction (comma-separated values):")
+        
+        if st.button("Predict"):
+            try:
+                input_values = [float(x) for x in sample_input.split(",")]
+                prediction = model.predict([input_values])
+                st.write(f"Prediction: {prediction[0]}")
+            except Exception as e:
+                st.error(f"Error making prediction: {e}")
+    
+    except Exception as e:
+        st.error(f"Failed to load model: {e}")
+else:
+    st.warning("Please upload a .pkl file to proceed.")
