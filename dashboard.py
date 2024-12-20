@@ -2,6 +2,16 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import io
+from io import BytesIO
+import requests
+# import joblib
+import os
+# from sklearn.preprocessing import MinMaxScaler
+import numpy as np
+import streamlit as st
+import pandas as pd
+import pickle
 
 st.set_page_config(layout='wide', initial_sidebar_state='expanded')
 
@@ -10,10 +20,7 @@ with open('style.css') as f:
 
 # Sidebar with image
 st.sidebar.header('Air Quality Prediction App')
-st.sidebar.image(
-    "/workspaces/CMP7005-Assingment-Work-Repo/Air-Quality-Improvement-through-WtE.jpeg",  # Replace with your image file path
-    use_column_width=True
-)
+st.sidebar.image("/workspaces/CMP7005-Assingment-Work-Repo/Air-Quality-Improvement-through-WtE.jpeg",use_column_width=True)
 
 url = "https://raw.githubusercontent.com/gihantha-sanjana/CMP7005-Assingment-Work-Repo/refs/heads/main/Preprocessed-Data.csv"
 
@@ -34,9 +41,7 @@ if data is not None:
 
 # Convert DATETIME column to pandas datetime (if not already done)
 data["DATETIME"] = pd.to_datetime(data["DATETIME"])
-
-
-st.sidebar.button("Prediction", type="primary")
+    
 
 # Sidebar filters
 # Select station
@@ -93,4 +98,68 @@ if not filtered_data.empty:
     st.pyplot(plt)
 else:
     st.warning("No data available to plot for the selected filters.")
+
+
+
+# Prediction-------------------------------------
+# st.subheader("Prediction Page")
+
+# model_url = "https://github.com/gihantha-sanjana/CMP7005-Assingment-Work-Repo/raw/refs/heads/main/random_forest_model.pkl"
+# data_path = "https://raw.githubusercontent.com/gihantha-sanjana/CMP7005-Assingment-Work-Repo/refs/heads/main/Preprocessed-Data.csv"
+
+# @st.cache_resource
+# def load_model_from_github(url):
+#     response = requests.get(url)     
+#     if response.status_code == 200:
+#         model_file = BytesIO(response.content)
+#         model = joblib.load(model_file)
+#         return model
+#     else:
+#         st.error(f"Failed to fetch the model. HTTP status code: {response.status_code}")
+#         return None
+    
+# @st.cache_resource
+# def load_data_from_github(url):
+#     response = requests.get(url)     
+#     if response.status_code == 200:
+#         data_path = BytesIO(response.content)
+#         data = joblib.load(data_path)
+#         return data
+#     else:
+#         st.error(f"Failed to fetch the model. HTTP status code: {response.status_code}")
+#         return None
+
+# # Load the model
+# model = load_model_from_github(model_url)
+# data = load_data_from_github(data_path)
+
+# with open(model, 'rb') as file:
+#     model = pickle.load(file)
+
+# # Load dataset
+# data = pd.read_csv(data_path)
+
+# # Streamlit app
+# st.title("Prediction App")
+
+# st.header("Input Features")
+
+# # Assuming the dataset has a specific set of features
+# # Use the dataset column names to dynamically create input fields
+# user_input = {}
+# for col in data.columns:
+#     if data[col].dtype == 'object':
+#         user_input[col] = st.selectbox(f"{col}:", data[col].unique())
+#     elif data[col].dtype in ['int64', 'float64']:
+#         user_input[col] = st.number_input(f"{col}:", value=float(data[col].mean()))
+
+# # Button to make predictions
+# if st.button("Predict"):
+#     # Prepare input for the model
+#     input_df = pd.DataFrame([user_input])
+#     prediction = model.predict(input_df)
+    
+#     st.subheader("Prediction Result:")
+#     st.write(prediction[0])
+# -----------------------------------------
 
