@@ -17,12 +17,6 @@ st.set_page_config(layout='wide', initial_sidebar_state='expanded')
 with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-# Sidebar with image
-st.sidebar.header('Air Quality Prediction App')
-st.sidebar.image(
-    "/workspaces/CMP7005-Assingment-Work-Repo/Air-Quality-Improvement-through-WtE.jpeg",  # Replace with your image file path
-    use_column_width=True
-)
 
 url = "https://raw.githubusercontent.com/gihantha-sanjana/CMP7005-Assingment-Work-Repo/refs/heads/main/Preprocessed-Data.csv"
 
